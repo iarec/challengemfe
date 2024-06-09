@@ -7,10 +7,10 @@ export default defineConfig({
   plugins: [
     react(),
     federation({
-      name: 'todo-components',
+      name: 'todo_app',
       filename: 'remoteEntry.js',
       exposes: {
-        './TodoApp': './src/components/TodoApp.tsx',
+        './TodoApp': './src/App.tsx',
       },
       shared: ['react'],
     }),

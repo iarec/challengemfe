@@ -1,30 +1,46 @@
 # MFE Todo List
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## How to run it
 
-Currently, two official plugins are available:
+'''js
+npm run dev
+'''
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## How to integrate it with a host MFE
 
-## Expanding the ESLint configuration
+Configure the host to get the remoteEntry.js file of this MFE.
+Example using vite.config.ts
+'''js
+import { defineConfig } from 'vite';
+import react from '@vitejs/plugin-react';
+import federation from '@originjs/vite-plugin-federation';
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+// https://vitejs.dev/config/
+export default defineConfig({
+plugins: [
+react(),
+federation({
+name: 'host-app',
+remotes: {
+todo_app: 'http://localhost:4173/assets/remoteEntry.js',
+},
+shared: ['react'],
+}),
+],
+build: {
+target: 'esnext',
+},
+});
+'''
 
-- Configure the top-level `parserOptions` property like this:
+## Build
 
-```js
-export default {
-  // other rules...
-  parserOptions: {
-    ecmaVersion: 'latest',
-    sourceType: 'module',
-    project: ['./tsconfig.json', './tsconfig.node.json'],
-    tsconfigRootDir: __dirname,
-  },
-}
-```
+npm run build
 
-- Replace `plugin:@typescript-eslint/recommended` to `plugin:@typescript-eslint/recommended-type-checked` or `plugin:@typescript-eslint/strict-type-checked`
-- Optionally add `plugin:@typescript-eslint/stylistic-type-checked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and add `plugin:react/recommended` & `plugin:react/jsx-runtime` to the `extends` list
+## Preview
+
+npm run preview
+
+## Tests
+
+npm run test
